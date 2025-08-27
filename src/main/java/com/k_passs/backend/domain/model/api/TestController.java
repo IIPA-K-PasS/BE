@@ -17,12 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping("/execute")
-    public BaseResponse<Void> test(@RequestParam String error){
-
-        if(error.equals("yes")){
-            throw new TestException(ErrorStatus._BAD_REQUEST);
-        }
-
+    public BaseResponse<Void> test(){
         return BaseResponse.onSuccess(SuccessStatus.OK,null);
     }
 }
