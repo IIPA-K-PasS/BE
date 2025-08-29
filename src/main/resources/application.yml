@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    url: ${DB_URL}
+    username: root
+    password:
+    url: jdbc:mysql://localhost:3306/billow_db #테스트용 로컬 db
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
