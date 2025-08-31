@@ -3,7 +3,7 @@ package com.k_passs.backend.domain.bill;
 import com.k_passs.backend.domain.model.entity.BaseEntity;
 import com.k_passs.backend.domain.model.enums.BillCategory;
 import com.k_passs.backend.domain.model.enums.BillStatus;
-import com.k_passs.backend.domain.user.User;
+import com.k_passs.backend.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
