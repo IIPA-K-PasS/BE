@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -15,18 +17,23 @@ public class JwtProvider {
 
     private static final Logger log = LoggerFactory.getLogger(JwtProvider.class);
 
+    // JWT 서명을 위한 키
     private final Key key;
 
+    // JWT 유효 시간: 24시간
     private static final long EXPIRATION_MS = 1000 * 60 * 60 * 24; // 24시간
 
     public JwtProvider(@Value("${jwt.secret}") String secretKey) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         // 환경 변수로부터 읽어온 secretKey 로그 출력
-        log.info("🔐 Loaded JWT secret key: {}", secretKey);
+        log.info("Loaded JWT secret key: {}", secretKey);
     }
 
+    // JWT 토큰 생성 메서드
     public String createToken(Long userId) {
+        log.info("JWT 생성 중! userId: {}", userId);
+        log.info("JWT 생성에 사용된 secret key: {}", Base64.getEncoder().encodeToString(key.getEncoded()));
         Date now = new Date();
         Date expiry = new Date(now.getTime() + EXPIRATION_MS);
 
@@ -38,6 +45,7 @@ public class JwtProvider {
                 .compact();
     }
 
+    // JWT 토큰에서 사용자 ID 추출
     public Long getUserId(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -47,12 +55,14 @@ public class JwtProvider {
         return Long.valueOf(claims.getSubject());
     }
 
+    // JWT 유효성 검증 메서드
     public boolean validateToken(String token) {
         try {
+            log.info("JWT 검증에 사용된 secret key: {}", Base64.getEncoder().encodeToString(key.getEncoded()));
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            log.warn("❌ Invalid JWT: {}", e.getMessage());
+            log.warn("Invalid JWT: {}", e.getMessage());
             return false;
         }
     }

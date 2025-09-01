@@ -29,4 +29,14 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"token\": \"" + jwt + "\"}");
     }
+//@Override
+//public void onAuthenticationSuccess(HttpServletRequest request,
+//                                    HttpServletResponse response,
+//                                    Authentication authentication) throws IOException {
+//    CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+//    String jwt = jwtProvider.createToken(oAuth2User.getUser().getId());
+//
+//    // ✅ 로그인 성공 후 앱으로 리디렉션 (딥링크)
+//    response.sendRedirect("myapp://oauth/callback?token=" + jwt);
+//}
 }
