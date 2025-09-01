@@ -5,9 +5,7 @@ import com.k_passs.backend.domain.model.enums.BillType;
 import com.k_passs.backend.domain.model.enums.BillStatus;
 import com.k_passs.backend.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,6 +13,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "bills")
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bill extends BaseEntity {
 
