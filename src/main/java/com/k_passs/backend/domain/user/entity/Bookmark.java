@@ -1,7 +1,7 @@
-package com.k_passs.backend.domain.user;
+package com.k_passs.backend.domain.user.entity;
 
 import com.k_passs.backend.domain.model.entity.BaseEntity;
-import com.k_passs.backend.domain.tip.Tip;
+import com.k_passs.backend.domain.tip.entity.Tip;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

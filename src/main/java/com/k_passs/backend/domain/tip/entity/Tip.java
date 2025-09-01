@@ -1,4 +1,4 @@
-package com.k_passs.backend.domain.tip;
+package com.k_passs.backend.domain.tip.entity;
 
 import com.k_passs.backend.domain.model.entity.BaseEntity;
 import jakarta.persistence.*;

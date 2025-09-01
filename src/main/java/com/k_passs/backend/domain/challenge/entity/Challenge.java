@@ -1,4 +1,4 @@
-package com.k_passs.backend.domain.challenge;
+package com.k_passs.backend.domain.challenge.entity;
 
 import com.k_passs.backend.domain.model.entity.BaseEntity;
 import jakarta.persistence.*;
