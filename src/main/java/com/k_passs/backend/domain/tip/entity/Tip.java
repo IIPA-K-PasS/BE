@@ -1,4 +1,4 @@
-package com.k_passs.backend.domain.tip;
+package com.k_passs.backend.domain.tip.entity;
 
 import com.k_passs.backend.domain.model.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -21,4 +21,9 @@ public class Tip extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+    public Tip(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
