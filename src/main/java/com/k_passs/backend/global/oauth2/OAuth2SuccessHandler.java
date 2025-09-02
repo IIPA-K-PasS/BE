@@ -1,0 +1,42 @@
+package com.k_passs.backend.global.oauth2;
+
+import com.k_passs.backend.global.jwt.JwtProvider;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+@Component
+@RequiredArgsConstructor
+public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
+
+    private final JwtProvider jwtProvider;
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
+
+        CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+        String jwt = jwtProvider.createToken(oAuth2User.getUser().getId());
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"token\": \"" + jwt + "\"}");
+    }
+//@Override
+//public void onAuthenticationSuccess(HttpServletRequest request,
+//                                    HttpServletResponse response,
+//                                    Authentication authentication) throws IOException {
+//    CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+//    String jwt = jwtProvider.createToken(oAuth2User.getUser().getId());
+//
+//    // ✅ 로그인 성공 후 앱으로 리디렉션 (딥링크)
+//    response.sendRedirect("myapp://oauth/callback?token=" + jwt);
+//}
+}
