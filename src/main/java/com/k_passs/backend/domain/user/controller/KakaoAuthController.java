@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class KakaoAuthController {
 
     // 클라이언트에서 카카오 액세스 토큰을 전달받아 로그인 처리

@@ -25,7 +25,7 @@ public class BookmarkRestController {
     private final BookmarkService bookMarkService;
 
     ///  북마크를 표시하면 보내야하니까?
-    @PostMapping("/bookmark")
+    @PostMapping("")
     @Operation(summary = "특정 꿀팁에 북마크 요청 또는 취소하는 API")
     @ApiResponses({
             @ApiResponse(responseCode = "BOOKMARK_200", description = "북마크 상태가 성공적으로 변경되었습니다.")
@@ -36,9 +36,9 @@ public class BookmarkRestController {
     ) {
         BookmarkResponseDTO.BookmarkResult result =
                 bookMarkService.updateBookmarkStatus(
-                        user.getUser(),                          // CustomOAuth2User → User
-                        request.getTipId(),                      // Long
-                        request.getIsBookmarked()                // boolean
+                        user.getUser(),
+                        request.getTipId(),
+                        request.getIsBookmarked()
                 );
 
         return BaseResponse.onSuccess(SuccessStatus.BOOKMARK_STATUS_CHANGED, result);
