@@ -3,6 +3,7 @@ package com.k_passs.backend.domain.user.controller;
 
 import com.k_passs.backend.domain.user.util.JwtUtil;
 import com.k_passs.backend.global.error.code.status.ErrorStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class KakaoAuthController {

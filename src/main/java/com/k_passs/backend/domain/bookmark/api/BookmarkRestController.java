@@ -7,7 +7,6 @@ import com.k_passs.backend.global.common.response.BaseResponse;
 import com.k_passs.backend.global.error.code.status.SuccessStatus;
 import com.k_passs.backend.global.oauth2.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
