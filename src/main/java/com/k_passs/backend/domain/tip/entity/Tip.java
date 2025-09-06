@@ -22,8 +22,23 @@ public class Tip extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    public Tip(String title, String content) {
+    // 사진 URL
+    @Column(length = 255)
+    private String imageUrl;
+
+    // 해시태그
+    @Column(length = 255)
+    private String hashtags;
+
+    // 추가 정보 텍스트
+    @Column(length = 255)
+    private String infoText;
+
+    public Tip(String title, String content, String imageUrl, String hashtags, String infoText) {
         this.title = title;
         this.content = content;
+        this.imageUrl = imageUrl;
+        this.hashtags = hashtags;
+        this.infoText = infoText;
     }
 }

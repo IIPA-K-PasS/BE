@@ -10,6 +10,9 @@ public class TipConverter {
                 .id(tip.getId())
                 .title(tip.getTitle())
                 .content(tip.getContent())
+                .imageUrl(tip.getImageUrl())
+                .hashtags(tip.getHashtags())
+                .infoText(tip.getInfoText())
                 .createdAt(tip.getCreatedAt())
                 .build();
     }
@@ -18,6 +21,8 @@ public class TipConverter {
         return TipResponseDTO.GetAllTipResult.builder()
                 .id(tip.getId())
                 .title(tip.getTitle())
+                .imageUrl(tip.getImageUrl())
+                .hashtags(tip.getHashtags())
                 .build();
     }
 }

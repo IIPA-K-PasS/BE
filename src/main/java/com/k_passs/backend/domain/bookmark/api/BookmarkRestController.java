@@ -1,8 +1,9 @@
 package com.k_passs.backend.domain.bookmark.api;
 
 import com.k_passs.backend.domain.bookmark.dto.BookmarkRequestDTO;
-import com.k_passs.backend.domain.bookmark.dto.BookmarkResponseDTO;
 import com.k_passs.backend.domain.bookmark.service.BookmarkService;
+import com.k_passs.backend.domain.user.entity.User;
+import com.k_passs.backend.domain.user.service.UserService;
 import com.k_passs.backend.global.common.response.BaseResponse;
 import com.k_passs.backend.global.error.code.status.SuccessStatus;
 import com.k_passs.backend.global.oauth2.CustomOAuth2User;
@@ -22,25 +23,25 @@ import org.springframework.web.bind.annotation.*;
 public class BookmarkRestController {
 
     private final BookmarkService bookMarkService;
+    private final UserService userService;
 
-    ///  북마크를 표시하면 보내야하니까?
     @PostMapping("")
     @Operation(summary = "특정 꿀팁에 북마크 요청 또는 취소하는 API")
     @ApiResponses({
             @ApiResponse(responseCode = "BOOKMARK_200", description = "북마크 상태가 성공적으로 변경되었습니다.")
     })
-    public BaseResponse<BookmarkResponseDTO.BookmarkResult> bookmark(
+    public BaseResponse<String> bookmark(
             @AuthenticationPrincipal CustomOAuth2User user,
             @RequestBody @Valid BookmarkRequestDTO.Bookmark request
     ) {
-        BookmarkResponseDTO.BookmarkResult result =
-                bookMarkService.updateBookmarkStatus(
-                        user.getUser(),
-                        request.getTipId(),
-                        request.getIsBookmarked()
-                );
+        if (user == null || user.getUser() == null) {
+            // 테스트용 더미 유저 생성
+            User dummyUser = userService.getUserById(1L); // 테스트용 ID
+            bookMarkService.updateBookmarkStatus(dummyUser, request);
+            return BaseResponse.onSuccess(SuccessStatus.BOOKMARK_STATUS_CHANGED, "북마크 상태가 변경되었습니다.");
+        }
 
-        return BaseResponse.onSuccess(SuccessStatus.BOOKMARK_STATUS_CHANGED, result);
+        bookMarkService.updateBookmarkStatus(user.getUser(), request);
+        return BaseResponse.onSuccess(SuccessStatus.BOOKMARK_STATUS_CHANGED, "북마크 상태가 변경되었습니다.");
     }
-
 }

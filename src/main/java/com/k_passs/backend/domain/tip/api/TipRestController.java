@@ -24,8 +24,6 @@ import java.util.List;
 public class TipRestController {
     private final TipService tipService;
 
-
-
     @GetMapping("/{tipId}")
     @Operation(summary = "특정 꿀팁의 상세 정보를 조회합니다.")
     @ApiResponses({

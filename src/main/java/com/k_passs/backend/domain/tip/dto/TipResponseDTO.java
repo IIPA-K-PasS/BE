@@ -17,6 +17,9 @@ public class TipResponseDTO {
         private Long id;
         private String title;
         private String content;
+        private String imageUrl;
+        private String hashtags;
+        private String infoText;
         private LocalDateTime createdAt;
     }
 
@@ -27,7 +30,7 @@ public class TipResponseDTO {
     public static class GetAllTipResult {
         private Long id;
         private String title;
+        private String imageUrl;
+        private String hashtags;
     }
-
-
 }
