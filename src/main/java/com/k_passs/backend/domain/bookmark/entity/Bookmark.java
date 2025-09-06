@@ -1,7 +1,7 @@
-package com.k_passs.backend.domain.user;
+package com.k_passs.backend.domain.bookmark.entity;
 
 import com.k_passs.backend.domain.model.entity.BaseEntity;
-import com.k_passs.backend.domain.tip.Tip;
+import com.k_passs.backend.domain.tip.entity.Tip;
 import com.k_passs.backend.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,4 +25,9 @@ public class Bookmark extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tip_id", nullable = false)
     private Tip tip;
+
+    public Bookmark(User user, Tip tip) {
+        this.user = user;
+        this.tip = tip;
+    }
 }
