@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TipResponseDTO {
 
@@ -18,7 +19,7 @@ public class TipResponseDTO {
         private String title;
         private String content;
         private String imageUrl;
-        private String hashtags;
+        private List<String> hashtags;
         private LocalDateTime createdAt;
     }
 
@@ -30,6 +31,6 @@ public class TipResponseDTO {
         private Long id;
         private String title;
         private String imageUrl;
-        private String hashtags;
+        private List<String> hashtags;
     }
 }

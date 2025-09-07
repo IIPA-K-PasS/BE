@@ -3,6 +3,9 @@ package com.k_passs.backend.domain.tip.converter;
 import com.k_passs.backend.domain.tip.entity.Tip;
 import com.k_passs.backend.domain.tip.dto.TipResponseDTO;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TipConverter {
 
     public static TipResponseDTO.GetTipResult toGetTip(Tip tip) {
@@ -11,7 +14,7 @@ public class TipConverter {
                 .title(tip.getTitle())
                 .content(tip.getContent())
                 .imageUrl(tip.getImageUrl())
-                .hashtags(tip.getHashtags())
+                .hashtags(tip.getHashtags() != null ? Arrays.asList(tip.getHashtags().split(",")) : List.of())
                 .createdAt(tip.getCreatedAt())
                 .build();
     }
@@ -21,7 +24,7 @@ public class TipConverter {
                 .id(tip.getId())
                 .title(tip.getTitle())
                 .imageUrl(tip.getImageUrl())
-                .hashtags(tip.getHashtags())
+                .hashtags(tip.getHashtags() != null ? Arrays.asList(tip.getHashtags().split(",")) : List.of())
                 .build();
     }
 }
