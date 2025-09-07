@@ -19,6 +19,7 @@ public enum SuccessStatus implements BaseCode {
 
     // Tip
     TIP_SUCCESS(HttpStatus.OK,"TIP_200", "꿀팁이 성공적으로 조회되었습니다."),
+    TIP_ALL_SUCCESS(HttpStatus.OK,"TIP_200", "전체 꿀팁이 성공적으로 조회되었습니다."),
     ;
 
 

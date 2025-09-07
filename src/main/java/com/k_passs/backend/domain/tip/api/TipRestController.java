@@ -46,6 +46,6 @@ public class TipRestController {
     })
     public BaseResponse<List<TipResponseDTO.GetAllTipResult>> getAllTips() {
         List<TipResponseDTO.GetAllTipResult> result = tipService.getAllTips();
-        return BaseResponse.onSuccess(SuccessStatus.TIP_SUCCESS, result);
+        return BaseResponse.onSuccess(SuccessStatus.TIP_ALL_SUCCESS, result);
     }
 }
