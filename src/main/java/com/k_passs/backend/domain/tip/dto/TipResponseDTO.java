@@ -19,7 +19,6 @@ public class TipResponseDTO {
         private String content;
         private String imageUrl;
         private String hashtags;
-        private String infoText;
         private LocalDateTime createdAt;
     }
 

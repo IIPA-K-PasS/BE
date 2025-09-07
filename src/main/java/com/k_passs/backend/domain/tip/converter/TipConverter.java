@@ -12,7 +12,6 @@ public class TipConverter {
                 .content(tip.getContent())
                 .imageUrl(tip.getImageUrl())
                 .hashtags(tip.getHashtags())
-                .infoText(tip.getInfoText())
                 .createdAt(tip.getCreatedAt())
                 .build();
     }
