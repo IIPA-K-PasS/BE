@@ -18,16 +18,6 @@ public class UserInfoResponse {
         private String nickname;
         private String profileImageUrl;
     }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class KakaoUserInfo {
-        private String email;
-        private String nickname;
-        private String profileImageUrl;
-    }
 }
 
 

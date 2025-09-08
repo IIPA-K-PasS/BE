@@ -3,6 +3,7 @@ package com.k_passs.backend.domain.auth.controller;
 import com.k_passs.backend.domain.auth.dto.KakaoLoginRequest;
 import com.k_passs.backend.domain.auth.dto.TokenResponse;
 import com.k_passs.backend.domain.auth.dto.UserInfoResponse;
+import com.k_passs.backend.domain.auth.service.AuthService;
 import com.k_passs.backend.domain.user.entity.User;
 import com.k_passs.backend.global.jwt.JwtProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final JwtProvider jwtProvider;
+    private final AuthService authService;
 
     // 카카오 로그인
     @Operation(
@@ -52,14 +54,6 @@ public class AuthController {
     @GetMapping("/user-info")
     public ResponseEntity<UserInfoResponse.AuthUserInfo> getUserInfo(
             @AuthenticationPrincipal(expression = "user") User user) {
-
-        UserInfoResponse.AuthUserInfo response = UserInfoResponse.AuthUserInfo.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .profileImageUrl(user.getProfileImageUrl())
-                .build();
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(authService.getUserInfo(user));
     }
 }
