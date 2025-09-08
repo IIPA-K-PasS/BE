@@ -23,20 +23,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException, ServletException {
 
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-        String jwt = jwtProvider.createToken(oAuth2User.getUser().getId());
+        String accessToken = jwtProvider.createAccessToken(oAuth2User.getUser().getId());
+        String refreshToken = jwtProvider.createRefreshToken(oAuth2User.getUser().getId());
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"token\": \"" + jwt + "\"}");
+        response.getWriter().write("{\"accessToken\": \"" + accessToken + "\", \"refreshToken\": \"" + refreshToken + "\"}");
     }
-//@Override
-//public void onAuthenticationSuccess(HttpServletRequest request,
-//                                    HttpServletResponse response,
-//                                    Authentication authentication) throws IOException {
-//    CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-//    String jwt = jwtProvider.createToken(oAuth2User.getUser().getId());
-//
-//    // ✅ 로그인 성공 후 앱으로 리디렉션 (딥링크)
-//    response.sendRedirect("myapp://oauth/callback?token=" + jwt);
-//}
 }
