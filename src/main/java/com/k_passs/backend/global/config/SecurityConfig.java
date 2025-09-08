@@ -38,14 +38,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 기존에 수동으로 설정했던 카카오 인증 경로를 제거하고, Swagger 및 기타 API 경로만 허용
                         .requestMatchers(
-                                "/api/auth/**",
+                                "/auth/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
-                                "/webjars/**",
-                                "/bookmark/**",
-                                "tip/**"
+                                "/webjars/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
