@@ -6,10 +6,13 @@ import com.k_passs.backend.domain.auth.dto.UserInfoResponse;
 import com.k_passs.backend.domain.auth.service.AuthService;
 import com.k_passs.backend.domain.user.entity.User;
 import com.k_passs.backend.global.jwt.JwtProvider;
+import com.k_passs.backend.global.oauth2.KakaoIdTokenValidator;
+import com.nimbusds.jwt.SignedJWT;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,7 @@ public class AuthController {
 
     private final JwtProvider jwtProvider;
     private final AuthService authService;
+    private final KakaoIdTokenValidator kakaoIdTokenValidator;
 
     // 카카오 로그인
     @Operation(
@@ -33,13 +37,8 @@ public class AuthController {
     })
     @PostMapping("/kakao")
     public ResponseEntity<TokenResponse> kakaoLogin(@RequestBody KakaoLoginRequest request) {
-        // TODO: 1. 카카오 idToken 검증 로직 추가 필요
-        Long userId = 2L; // 테스트용 userId, 실제로는 카카오 API 호출 후 userId를 매핑해야 함
-
-        String accessToken = jwtProvider.createAccessToken(userId);
-        String refreshToken = jwtProvider.createRefreshToken(userId);
-
-        return ResponseEntity.ok(new TokenResponse(accessToken, refreshToken));
+        TokenResponse tokenResponse = authService.kakaoLogin(request.getIdToken());
+        return ResponseEntity.ok(tokenResponse);
     }
 
     // 유저 정보 요청
