@@ -1,5 +1,7 @@
 package com.k_passs.backend.domain.auth.service;
 
+import java.util.Map;
+
 import com.k_passs.backend.domain.auth.converter.AuthConverter;
 import com.k_passs.backend.domain.auth.dto.TokenResponse;
 import com.k_passs.backend.domain.auth.dto.UserInfoResponse;
@@ -28,16 +30,80 @@ public class AuthServiceImpl implements AuthService {
             }
 
             SignedJWT signedJWT = SignedJWT.parse(idToken);
-            String kakaoUserId = signedJWT.getJWTClaimsSet().getSubject();
+            var claims = signedJWT.getJWTClaimsSet();
+            String kakaoUserId = claims.getSubject();
 
-            // DB 조회 또는 신규 생성
-            User user = userRepository.findByEmail(kakaoUserId)
-                    .orElseGet(() -> userRepository.save(
+            String email = null;
+            String nickname = null;
+            try { email = claims.getStringClaim("email"); } catch (Exception ignored) {}
+            try { nickname = claims.getStringClaim("nickname"); } catch (Exception ignored) {}
+
+            // Fallbacks for Kakao-specific nested claim shapes
+            Object kakaoAccountObj = claims.getClaim("kakao_account");
+            if (email == null && kakaoAccountObj instanceof Map<?,?> kakaoAcc) {
+                Object emailObj = kakaoAcc.get("email");
+                if (emailObj instanceof String s) email = s;
+                Object profileObj = kakaoAcc.get("profile");
+                if (nickname == null && profileObj instanceof Map<?,?> prof) {
+                    Object nn = prof.get("nickname");
+                    if (nn instanceof String s) nickname = s;
+                }
+            }
+
+            if (nickname == null) {
+                try { nickname = claims.getStringClaim("name"); } catch (Exception ignored) {}
+                Object propsObj = claims.getClaim("properties");
+                if (nickname == null && propsObj instanceof Map<?,?> props) {
+                    Object nn = props.get("nickname");
+                    if (nn instanceof String s) nickname = s;
+                }
+            }
+            if (nickname == null) nickname = "새 유저";
+
+            // DB 조회 또는 신규 생성 (by email if available, else fallback)
+            final String resolvedEmail = email;
+            final String resolvedNickname = nickname;
+            User user;
+
+            if (resolvedEmail != null && !resolvedEmail.isBlank()) {
+                var existing = userRepository.findByEmail(resolvedEmail);
+                if (existing.isPresent()) {
+                    User u = existing.get();
+                    // 업데이트: 닉네임이나 프로필이 비어 있을 때 보강
+                    if ((u.getNickname() == null || u.getNickname().isBlank()) && resolvedNickname != null) {
+                        // 새 인스턴스를 만들었다면 반드시 저장하여 반영
+                        u = User.builder()
+                                .id(u.getId())
+                                .email(u.getEmail())
+                                .nickname(resolvedNickname)
+                                .profileImageUrl(u.getProfileImageUrl())
+                                .point(u.getPoint())
+                                .build();
+                        u = userRepository.save(u);
+                    }
+                    user = u;
+                } else {
+                    user = userRepository.save(
                             User.builder()
-                                    .email(kakaoUserId)
-                                    .nickname("새 유저")
+                                    .email(resolvedEmail)
+                                    .nickname(resolvedNickname)
                                     .build()
-                    ));
+                    );
+                }
+            } else {
+                // TODO: 향후 providerUserId(=kakao sub) 컬럼을 도입해 이 분기 제거
+                var existing = userRepository.findByEmail(kakaoUserId);
+                if (existing.isPresent()) {
+                    user = existing.get();
+                } else {
+                    user = userRepository.save(
+                            User.builder()
+                                    .email(kakaoUserId) // 임시 보관
+                                    .nickname(resolvedNickname)
+                                    .build()
+                    );
+                }
+            }
 
             // 토큰 발급
             String accessToken = jwtProvider.createAccessToken(user.getId());
