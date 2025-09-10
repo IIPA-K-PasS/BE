@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final JwtProvider jwtProvider;
     private final AuthService authService;
-    private final KakaoIdTokenValidator kakaoIdTokenValidator;
 
     // 카카오 로그인
     @Operation(

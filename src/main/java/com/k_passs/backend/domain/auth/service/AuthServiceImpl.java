@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
             try { email = claims.getStringClaim("email"); } catch (Exception ignored) {}
             try { nickname = claims.getStringClaim("nickname"); } catch (Exception ignored) {}
 
-            // Fallbacks for Kakao-specific nested claim shapes
+            // 카카오 idToken은 여러 구조로 정보가 들어올 수 있으므로, 여러 경로로 이메일/닉네임 추출 시도
             Object kakaoAccountObj = claims.getClaim("kakao_account");
             if (email == null && kakaoAccountObj instanceof Map<?,?> kakaoAcc) {
                 Object emailObj = kakaoAcc.get("email");
@@ -60,18 +60,19 @@ public class AuthServiceImpl implements AuthService {
             }
             if (nickname == null) nickname = "새 유저";
 
-            // DB 조회 또는 신규 생성 (by email if available, else fallback)
             final String resolvedEmail = email;
             final String resolvedNickname = nickname;
             User user;
 
+            // DB에서 사용자 조회 및 저장 로직
+            // 이메일이 있으면 이메일로, 없으면 카카오 고유 ID로 사용자 조회/저장
             if (resolvedEmail != null && !resolvedEmail.isBlank()) {
                 var existing = userRepository.findByEmail(resolvedEmail);
                 if (existing.isPresent()) {
                     User u = existing.get();
-                    // 업데이트: 닉네임이나 프로필이 비어 있을 때 보강
+
+                    // 기존 유저의 닉네임이 비어있으면, 카카오에서 받은 닉네임으로 업데이트
                     if ((u.getNickname() == null || u.getNickname().isBlank()) && resolvedNickname != null) {
-                        // 새 인스턴스를 만들었다면 반드시 저장하여 반영
                         u = User.builder()
                                 .id(u.getId())
                                 .email(u.getEmail())
@@ -79,10 +80,11 @@ public class AuthServiceImpl implements AuthService {
                                 .profileImageUrl(u.getProfileImageUrl())
                                 .point(u.getPoint())
                                 .build();
-                        u = userRepository.save(u);
+                        u = userRepository.save(u); // 닉네임 업데이트 후 저장
                     }
                     user = u;
                 } else {
+                    // 신규 유저 - 이메일과 닉네임으로 회원 가입
                     user = userRepository.save(
                             User.builder()
                                     .email(resolvedEmail)
@@ -91,33 +93,36 @@ public class AuthServiceImpl implements AuthService {
                     );
                 }
             } else {
-                // TODO: 향후 providerUserId(=kakao sub) 컬럼을 도입해 이 분기 제거
+                // 이메일이 없는 경우, 카카오 고유 ID로 임시 이메일 대체하여 회원 식별
                 var existing = userRepository.findByEmail(kakaoUserId);
                 if (existing.isPresent()) {
                     user = existing.get();
                 } else {
                     user = userRepository.save(
                             User.builder()
-                                    .email(kakaoUserId) // 임시 보관
+                                    .email(kakaoUserId) // 임시로 카카오 ID를 이메일 필드에 저장
                                     .nickname(resolvedNickname)
                                     .build()
                     );
                 }
             }
 
-            // 토큰 발급
+            // JWT 토큰(Access/Refresh) 발급
             String accessToken = jwtProvider.createAccessToken(user.getId());
             String refreshToken = jwtProvider.createRefreshToken(user.getId());
 
+            // 최종적으로 토큰 응답 반환
             return new TokenResponse(accessToken, refreshToken);
 
         } catch (Exception e) {
+            // idToken 파싱이나 처리 중 예외 발생 시 UNAUTHORIZED 반환
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "idToken parsing failed", e);
         }
     }
 
     @Override
     public UserInfoResponse.AuthUserInfo getUserInfo(User user) {
+        // 사용자 정보 조회
         return AuthConverter.toAuthUserInfo(user);
     }
 }
