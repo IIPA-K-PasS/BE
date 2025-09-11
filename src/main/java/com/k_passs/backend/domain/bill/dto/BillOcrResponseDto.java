@@ -11,4 +11,5 @@ public class BillOcrResponseDto {
     private BillType billType;
     private Integer amount;
     private String usagePeriod;
+    private String rawText;
 }
