@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -37,18 +36,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
+                        // 기존에 수동으로 설정했던 카카오 인증 경로를 제거하고, Swagger 및 기타 API 경로만 허용
                         .requestMatchers(
-                                "/api/auth/**",
+                                "/auth/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
-                                "/webjars/**",
-                                "/auth/kakao",
-                                "/kakao/**",
-                                "/callback/**",
-                                "/bookmark/**",
-                                "tip/**"
+                                "/webjars/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -63,8 +58,8 @@ public class SecurityConfig {
                         })
                 )
                 .oauth2Login(oauth2 -> oauth2
-                                .userInfoEndpoint(userInfoEndpointConfig ->
-                                        userInfoEndpointConfig.userService(customOAuth2UserService)
+                        .userInfoEndpoint(userInfoEndpointConfig ->
+                                userInfoEndpointConfig.userService(customOAuth2UserService)
                         )
                         .successHandler(oAuth2SuccessHandler)
                 )

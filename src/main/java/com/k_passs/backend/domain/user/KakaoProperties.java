@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @ConfigurationProperties(prefix = "kakao")
 @Component
 @Getter
@@ -17,6 +19,7 @@ public class KakaoProperties {
     public static class Client {
         private String id;
         private String secret;
+        private List<String> allowedIds;
     }
 
     @Getter @Setter
