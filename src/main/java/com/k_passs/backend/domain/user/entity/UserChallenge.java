@@ -1,6 +1,6 @@
-package com.k_passs.backend.domain.user;
+package com.k_passs.backend.domain.user.entity;
 
-import com.k_passs.backend.domain.challenge.Challenge;
+import com.k_passs.backend.domain.challenge.entity.Challenge;
 import com.k_passs.backend.domain.model.entity.BaseEntity;
 import com.k_passs.backend.domain.model.enums.ChallengeStatus;
 import com.k_passs.backend.domain.user.entity.User;

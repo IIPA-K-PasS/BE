@@ -1,7 +1,7 @@
 package com.k_passs.backend.global.security;
 
 import com.k_passs.backend.domain.user.entity.User;
-import com.k_passs.backend.domain.user.repogitory.UserRepository;
+import com.k_passs.backend.domain.user.repository.UserRepository;
 import com.k_passs.backend.global.jwt.JwtProvider;
 import com.k_passs.backend.global.oauth2.CustomOAuth2User;
 import jakarta.servlet.FilterChain;

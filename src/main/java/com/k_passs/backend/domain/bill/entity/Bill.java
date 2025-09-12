@@ -1,13 +1,11 @@
-package com.k_passs.backend.domain.bill;
+package com.k_passs.backend.domain.bill.entity;
 
 import com.k_passs.backend.domain.model.entity.BaseEntity;
-import com.k_passs.backend.domain.model.enums.BillCategory;
+import com.k_passs.backend.domain.model.enums.BillType;
 import com.k_passs.backend.domain.model.enums.BillStatus;
 import com.k_passs.backend.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,6 +13,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "bills")
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bill extends BaseEntity {
 
@@ -31,7 +31,7 @@ public class Bill extends BaseEntity {
 
     @Enumerated(EnumType.STRING) // Enum 타입을 DB에 문자열로 저장
     @Column(nullable = false)
-    private BillCategory category;
+    private BillType category;
 
     // 금액은 부동소수점 오류를 피하기 위해 BigDecimal 사용
     @Column(nullable = false, precision = 12, scale = 2)

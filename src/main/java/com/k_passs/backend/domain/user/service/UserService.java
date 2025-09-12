@@ -1,7 +1,7 @@
 package com.k_passs.backend.domain.user.service;
 
 import com.k_passs.backend.domain.user.entity.User;
-import com.k_passs.backend.domain.user.repogitory.UserRepository;
+import com.k_passs.backend.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

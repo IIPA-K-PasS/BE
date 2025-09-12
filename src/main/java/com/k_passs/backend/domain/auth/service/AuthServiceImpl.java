@@ -6,7 +6,7 @@ import com.k_passs.backend.domain.auth.converter.AuthConverter;
 import com.k_passs.backend.domain.auth.dto.TokenResponse;
 import com.k_passs.backend.domain.auth.dto.UserInfoResponse;
 import com.k_passs.backend.domain.user.entity.User;
-import com.k_passs.backend.domain.user.repogitory.UserRepository;
+import com.k_passs.backend.domain.user.repository.UserRepository;
 import com.k_passs.backend.global.jwt.JwtProvider;
 import com.k_passs.backend.global.oauth2.KakaoIdTokenValidator;
 import com.nimbusds.jwt.SignedJWT;
