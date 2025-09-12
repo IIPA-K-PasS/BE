@@ -3,17 +3,17 @@ package com.k_passs.backend.domain.user.entity;
 import com.k_passs.backend.domain.bill.entity.Bill;
 import com.k_passs.backend.domain.model.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.*;
+
 @Entity
-@Table(name = "users") // DB 테이블명을 명시
+@Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class User extends BaseEntity {
 
     @Id
@@ -30,13 +30,21 @@ public class User extends BaseEntity {
     private String profileImageUrl;
 
     @Column
-    private Long point; // int보다 큰 값을 가질 수 있으므로 Long 타입 사용
+    @Builder.Default
+    private Long point = 0L; // 포인트 필드에 기본값 설정
 
     // User는 여러 Bill을 가질 수 있음 (1:N 관계)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Bill> bills = new ArrayList<>();
 
     // User는 여러 PointHistory를 가질 수 있음 (1:N 관계)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<PointHistory> pointHistories = new ArrayList<>();
+
+    // 이 부분은 사용자 테이블에는 없지만 연관관계를 고려해야 합니다.
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<UserChallenge> userChallenges = new ArrayList<>();
 }

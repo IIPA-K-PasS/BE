@@ -12,7 +12,17 @@ import org.springframework.http.HttpStatus;
 public enum SuccessStatus implements BaseCode {
 
     //Common
-    OK(HttpStatus.OK, "COMMON_200", "성공입니다.");
+    OK(HttpStatus.OK, "COMMON_200", "성공입니다."),
+
+    // Bookmark
+    BOOKMARK_STATUS_CHANGED(HttpStatus.OK, "BOOKMARK_200","북마크 상태가 성공적으로 변경되었습니다."),
+
+    // Tip
+    TIP_SUCCESS(HttpStatus.OK,"TIP_200", "꿀팁이 성공적으로 조회되었습니다."),
+    TIP_ALL_SUCCESS(HttpStatus.OK,"TIP_200", "전체 꿀팁이 성공적으로 조회되었습니다."),
+    ;
+
+
 
     private final HttpStatus httpStatus;
     private final String code;
