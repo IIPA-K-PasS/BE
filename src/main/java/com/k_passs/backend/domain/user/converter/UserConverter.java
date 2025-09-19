@@ -2,7 +2,6 @@ package com.k_passs.backend.domain.user.converter;
 
 import com.k_passs.backend.domain.user.dto.UserResponseDTO;
 import com.k_passs.backend.domain.user.entity.User;
-import org.springframework.stereotype.Component;
 
 public class UserConverter {
 
