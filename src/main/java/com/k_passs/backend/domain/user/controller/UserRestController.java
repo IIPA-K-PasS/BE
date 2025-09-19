@@ -1,5 +1,6 @@
 package com.k_passs.backend.domain.user.controller;
 
+import com.k_passs.backend.domain.user.dto.UserRequestDTO;
 import com.k_passs.backend.domain.user.dto.UserResponseDTO;
 import com.k_passs.backend.domain.user.entity.User;
 import com.k_passs.backend.domain.user.service.UserService;
@@ -31,5 +32,19 @@ public class UserRestController {
     ) {
         UserResponseDTO.GetUserInfo result= userService.getUserInfo(user);
         return BaseResponse.onSuccess(SuccessStatus.USER_GET_SUCCESS,result);
+    }
+
+    // 회원 이름(닉네임) 수정
+    @PatchMapping("/profile")
+    @Operation(summary = "회원 닉네임을 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "USER_200", description = "회원 닉네임을 성공적으로 수정했습니다.")
+    })
+    public BaseResponse<UserResponseDTO.UpdateNicknameResult> updateNickname(
+            @AuthenticationPrincipal(expression = "user") User user,
+            @RequestBody UserRequestDTO.UpdateNickname request
+    ) {
+        UserResponseDTO.UpdateNicknameResult result = userService.updateNickname(user, request);
+        return BaseResponse.onSuccess(SuccessStatus.USER_GET_SUCCESS, result);
     }
 }

@@ -14,4 +14,11 @@ public class UserConverter {
                 .point(user.getPoint())
                 .build();
     }
+
+    public static UserResponseDTO.UpdateNicknameResult toUpdateNicknameResult(User user) {
+        return UserResponseDTO.UpdateNicknameResult.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .build();
+    }
 }

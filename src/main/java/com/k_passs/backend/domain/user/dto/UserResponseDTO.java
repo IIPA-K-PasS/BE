@@ -17,4 +17,13 @@ public class UserResponseDTO {
         private String profileImageUrl;
         private Long point;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateNicknameResult {
+        private Long id;
+        private String nickname;
+    }
 }
