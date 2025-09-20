@@ -40,20 +40,20 @@ public class UserRestController {
     @PatchMapping("/profile")
     @Operation(summary = "회원 닉네임을 수정합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "USER_200", description = "회원 닉네임을 성공적으로 수정했습니다.")
+            @ApiResponse(responseCode = "USER_201", description = "회원 닉네임을 성공적으로 수정했습니다.")
     })
     public BaseResponse<UserResponseDTO.UpdateNicknameResult> updateNickname(
             @AuthenticationPrincipal(expression = "user") User user,
             @RequestBody UserRequestDTO.UpdateNickname request
     ) {
         UserResponseDTO.UpdateNicknameResult result = userService.updateNickname(user, request);
-        return BaseResponse.onSuccess(SuccessStatus.USER_GET_SUCCESS, result);
+        return BaseResponse.onSuccess(SuccessStatus.USER_UPDATE_NAME, result);
     }
 
     @GetMapping("/bookmarks")
     @Operation(summary = "내가 찜한 꿀팁 조회")
     @ApiResponses({
-            @ApiResponse(responseCode = "USER_200", description = "내가 찜한 꿀팁 목록을 성공적으로 조회했습니다.")
+            @ApiResponse(responseCode = "USER_202", description = "내가 찜한 꿀팁 목록을 성공적으로 조회했습니다.")
     })
     public BaseResponse<List<UserResponseDTO.GetMyBookmarkTipInfo>> getMyBookmarks(
             @AuthenticationPrincipal(expression = "user") User user
@@ -65,7 +65,7 @@ public class UserRestController {
     @GetMapping("/challenges")
     @Operation(summary = "내가 완료한 챌린지 조회")
     @ApiResponses({
-            @ApiResponse(responseCode = "USER_200", description = "완료한 챌린지 목록을 성공적으로 조회했습니다.")
+            @ApiResponse(responseCode = "USER_203", description = "완료한 챌린지 목록을 성공적으로 조회했습니다.")
     })
     public BaseResponse<List<UserResponseDTO.GetMyCompletedChallengeInfo>> getMyCompletedChallenges(
             @AuthenticationPrincipal(expression = "user") User user
