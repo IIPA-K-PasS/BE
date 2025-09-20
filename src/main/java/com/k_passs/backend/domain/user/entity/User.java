@@ -43,7 +43,6 @@ public class User extends BaseEntity {
     @Builder.Default
     private List<PointHistory> pointHistories = new ArrayList<>();
 
-    // 이 부분은 사용자 테이블에는 없지만 연관관계를 고려해야 합니다.
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
     private List<UserChallenge> userChallenges = new ArrayList<>();

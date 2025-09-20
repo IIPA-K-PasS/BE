@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponseDTO.GetMyBookmarkTipInfo> getUserBookmarks(User user) {
-        // User → Bookmark → Tip 리스트 조회
         List<Bookmark> bookmarks = userRepository.findBookmarksByUserId(user.getId());
 
         return bookmarks.stream()
