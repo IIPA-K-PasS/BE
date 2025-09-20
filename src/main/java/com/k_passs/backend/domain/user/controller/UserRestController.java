@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -45,6 +47,30 @@ public class UserRestController {
             @RequestBody UserRequestDTO.UpdateNickname request
     ) {
         UserResponseDTO.UpdateNicknameResult result = userService.updateNickname(user, request);
+        return BaseResponse.onSuccess(SuccessStatus.USER_GET_SUCCESS, result);
+    }
+
+    @GetMapping("/bookmarks")
+    @Operation(summary = "내가 찜한 꿀팁 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "USER_200", description = "내가 찜한 꿀팁 목록을 성공적으로 조회했습니다.")
+    })
+    public BaseResponse<List<UserResponseDTO.GetMyBookmarkTipInfo>> getMyBookmarks(
+            @AuthenticationPrincipal(expression = "user") User user
+    ) {
+        List<UserResponseDTO.GetMyBookmarkTipInfo> result = userService.getUserBookmarks(user);
+        return BaseResponse.onSuccess(SuccessStatus.USER_GET_SUCCESS, result);
+    }
+
+    @GetMapping("/challenges")
+    @Operation(summary = "내가 완료한 챌린지 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "USER_200", description = "완료한 챌린지 목록을 성공적으로 조회했습니다.")
+    })
+    public BaseResponse<List<UserResponseDTO.GetMyCompletedChallengeInfo>> getMyCompletedChallenges(
+            @AuthenticationPrincipal(expression = "user") User user
+    ) {
+        List<UserResponseDTO.GetMyCompletedChallengeInfo> result = userService.getMyCompletedChallenges(user);
         return BaseResponse.onSuccess(SuccessStatus.USER_GET_SUCCESS, result);
     }
 }
