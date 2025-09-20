@@ -37,12 +37,7 @@ public class BookmarkRestController {
             @RequestBody @Valid BookmarkRequestDTO.Bookmark request
     ) {
         if (user == null || user.getUser() == null) {
-            // 테스트용 더미 유저 생성
-//            User dummyUser = userService.getUserById(1L); // 테스트용 ID
-//            bookMarkService.updateBookmarkStatus(dummyUser, request);
-//            return BaseResponse.onSuccess(SuccessStatus.BOOKMARK_STATUS_CHANGED, "북마크 상태가 변경되었습니다.");
-//            return BaseResponse.onFailure("AUTH_401", "로그인이 필요합니다.");
-            return BaseResponse.onFailure(ErrorStatus.NO_SUCH_USER, "유저가 없습니다.");
+            return BaseResponse.onFailure(ErrorStatus._USER_UNAUTHORIZED, "유저 인증에 실패했습니다.");
         }
 
         bookMarkService.updateBookmarkStatus(user.getUser(), request);

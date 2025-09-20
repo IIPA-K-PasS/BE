@@ -27,7 +27,7 @@ public class UserRestController {
     @GetMapping
     @Operation(summary = "현재 로그인된 유저 정보를 조회합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "USER_200", description = "전체 꿀팁 정보를 성공적으로 조회했습니다.")
+            @ApiResponse(responseCode = "USER_200", description = "현재 로그인된 유저를 성공적으로 조회했습니다.")
     })
     public BaseResponse<UserResponseDTO.GetUserInfo> getUserInfo(
             @AuthenticationPrincipal(expression = "user") User user
