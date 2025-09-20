@@ -59,7 +59,7 @@ public class UserRestController {
             @AuthenticationPrincipal(expression = "user") User user
     ) {
         List<UserResponseDTO.GetMyBookmarkTipInfo> result = userService.getUserBookmarks(user);
-        return BaseResponse.onSuccess(SuccessStatus.USER_GET_SUCCESS, result);
+        return BaseResponse.onSuccess(SuccessStatus.USER_GET_TIPS, result);
     }
 
     @GetMapping("/challenges")
@@ -71,6 +71,6 @@ public class UserRestController {
             @AuthenticationPrincipal(expression = "user") User user
     ) {
         List<UserResponseDTO.GetMyCompletedChallengeInfo> result = userService.getMyCompletedChallenges(user);
-        return BaseResponse.onSuccess(SuccessStatus.USER_GET_SUCCESS, result);
+        return BaseResponse.onSuccess(SuccessStatus.USER_GET_CHALLENGE, result);
     }
 }
